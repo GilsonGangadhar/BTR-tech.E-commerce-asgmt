@@ -1,14 +1,24 @@
-import './App.css';
-// import {Switch, Route, useHistory, Redirect} from 'react-router-dom'
-import HomeScreen from './components/homscreen/HomeScreen';
-// import Checkout from './components/checkout/Checkout';
-
+import "./App.css";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import HomeScreen from "./components/homscreen/HomeScreen";
+import Checkout from "./components/checkout/Checkout";
 
 function App() {
   return (
-    <div className="App">
-      <HomeScreen/>
-    </div>
+    <Router>
+      <div className="container">
+        <HomeScreen />
+
+        <Checkout />
+
+
+        {/* <Routes>
+          <Route path="/" element={<HomeScreen/>} />
+          <Route path="/checkout" element={<Checkout/>} />
+        </Routes> */}
+
+      </div>
+    </Router>
   );
 }
 

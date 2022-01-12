@@ -6,11 +6,11 @@ import configureStore from './store/store'
 import {Provider} from 'react-redux'
 
 const store = configureStore();
-console.log(store.getState())
+// console.log(store.getState())
 
-store.subscribe(() => {
-  console.log(store.getState())
-})
+// store.subscribe(() => {
+//   console.log(store.getState())
+// })
 
 const ele = (
   <Provider store={store}>

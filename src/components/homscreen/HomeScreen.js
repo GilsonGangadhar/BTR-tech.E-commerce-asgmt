@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import data from "../../data.json";
+import {addCarts} from '../../actions/cartAction'
 import "./homescreen.css"
 
 function HomeScreen() {
@@ -14,7 +15,8 @@ function HomeScreen() {
 
 
 const handleClick = (item) => {
-setCart([...cart, item])
+setCart([...cart, item]);
+dispatch(addCarts(cart))
 }
 console.log(cart, "store")
 
