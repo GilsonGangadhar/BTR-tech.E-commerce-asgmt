@@ -2,32 +2,37 @@
     {
         "id" : 1, 
         "title" : "Bread",
-        "unit" : "GBP",
-        "price" : 1.10
+        "unit" : "£",
+        "price" : 1.10,
+        "count" : 1
     },
     {
         "id" : 2, 
         "title" : "Milk",
-        "unit" : "GBP",
-        "price" : 0.50
+        "unit" : "£",
+        "price" : 0.50,
+        "count" : 1
     },
     {
         "id" : 3, 
         "title" : "Cheese",
-        "unit" : "GBP",
-        "price" : 0.90
+        "unit" : "£",
+        "price" : 0.90,
+        "count" : 1
     },
     {
         "id" : 4, 
         "title" : "Soup",
-        "unit" : "GBP",
-        "price" : 0.60
+        "unit" : "£",
+        "price" : 0.60,
+        "count" : 1
     },
     {
         "id" : 5, 
         "title" : "Butter",
-        "unit" : "GBP",
-        "price" : 1.20
+        "unit" : "£",
+        "price" : 1.20,
+        "count" : 1
     }
    
 ]

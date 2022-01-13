@@ -1,17 +1,16 @@
+export const cartReducer = (state = [], action) => {
+  const { type, payload } = action;
+  switch (type) {
+    case "CART":
+      return state.concat(payload);
 
-export const cartReducer = (state = {
-    cart : []
-}, action) => {
-    const {type, payload} = action
-switch(type){
+    case "ADD_TO_CART":
+      return [...payload];
 
-    case "ADD_CARTS" : 
-    return{
-        cart : [...state.cart, ...payload]
-    }
+    case "REMOVE_FROM_CART":
+      return [...payload];
 
     default:
-        return state
-}
-}
-
+      return state;
+  }
+};
