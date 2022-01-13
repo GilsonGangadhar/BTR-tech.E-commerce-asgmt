@@ -8,7 +8,7 @@ function Checkout() {
 
   console.log(storedCart, "cart in checkout");
 
-  const handleAddClick = (item) => {
+  const handleClickAdd = (item) => {
     
     let newItem = {...item, count : item.count +1};
     const objIndex =  storedCart.findIndex((item) => item.title === newItem.title);
@@ -20,10 +20,10 @@ function Checkout() {
     dispatch(addToCart(newCartArray));
   };
 
-  const handleRemoveClick = (item) => {
+  const handleClickRemove = (item) => {
     if(!item.count <= 0){
-        
-    let newItem = {...item, count : item.count-1};
+
+    let newItem = {...item, count: item.count-1};
 
     const objIndex =  storedCart.findIndex((item) => item.title === newItem.title);
     let newCartArray = [...storedCart];
@@ -36,6 +36,13 @@ function Checkout() {
     
   };
 
+  /*
+  Item cost{" "} {item.unit}{Number(item.price * item.count)}
+  
+  
+  
+  */
+
   return (
     <div>
       <span>
@@ -43,14 +50,40 @@ function Checkout() {
       </span>
       {storedCart.map((item, index) => (
         <div key={index}>
-          <h4>{item.title}</h4>
+          <h3>{item.title}</h3>
           <p>{item.unit}</p>
-          <p>{item.price}</p>
-          <button onClick={() => handleAddClick(item)}>+</button>
-          <p>{item.count}</p>
-          <button onClick={() => handleRemoveClick(item)}>-</button>
+          <h3>{item.price}</h3>
+          <span>
+          <button onClick={() => handleClickAdd(item)}>+</button>
+          <h4>{item.count}</h4>
+          <button onClick={() => handleClickRemove(item)}>-</button>
+          </span>
+          <p>{`Item Price ${item.unit}${item.price} * ${item.count} `} = {item.unit}{(item.price * item.count).toFixed(2)}</p>
+          
+          {/* savings */}
+
+          {item.title === "Bread" && (<span><p>Savings{" "} £{item.price/2}</p></span>)}
+
+          {item.title === "Cheese" && (<span><p>Savings{" "} £{item.price/2}</p><p>{`(Buy 1 get 1 free)`}</p></span>)}
+
+          {item.title === "Butter" && (<span><p>Savings{" "} £{(item.price/3).toFixed(2)}</p></span>)}
+
+          
+          {/* ṭotal cost */}
+          {item.title === "Milk" && (<div>Item cost{" "} {item.unit}{(item.price * item.count).toFixed(2)}</div>) }
+
+          {item.title === "Soup" && (<div>Item cost{" "} {item.unit}{(item.price * item.count).toFixed(2)}</div>)}
+
+          {item.title === "Bread" && (<div>Item cost{" "} {item.unit}{((item.price * item.count) - item.price/2).toFixed(2)}</div>)}
+
+          {item.title === "Cheese" && (<div><p>Item cost{" "} {item.unit}{(item.price/2 * item.count).toFixed(2)}</p></div>)}
+
+          {item.title === "Butter" && (<div><p>Item cost{" "} {item.unit}{((item.price * item.count) - item.price/3).toFixed(2)}</p></div>) }
         </div>
       ))}
+     {/* <h3>Sub Total: </h3>
+     <h3>Savings: </h3>
+     <h3>Total Amount: </h3> */}
     </div>
   );
 }
