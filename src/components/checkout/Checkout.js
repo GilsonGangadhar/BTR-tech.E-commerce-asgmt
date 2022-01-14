@@ -1,13 +1,9 @@
-import React, {useState} from "react";
+import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { addToCart } from "../../actions/cartAction";
 
 function Checkout() {
-  const [values, setValues] = useState({
-    subTotal: 0,
-    savings: 0,
-    totalAmount: 0
-  })
+
   const dispatch = useDispatch();
   const storedCart = useSelector((state) => state.cart);
 
@@ -61,7 +57,7 @@ function Checkout() {
         let cheeseItemIndex = newCartArray.findIndex(
           (item) => item.title === "Cheese"
         );
-        let cheeseSavings = (0.45) * itemCount;
+        let cheeseSavings = 0.45 * itemCount;
         newCartArray[cheeseItemIndex] = {
           ...cartItem,
           count: itemCount,
@@ -130,11 +126,7 @@ function Checkout() {
     }
   };
 
-  const calculateTotal = () => {
-
-  }
-
-  console.log(storedCart, "storedCart")
+  console.log(storedCart, "storedCart");
 
   return (
     <div>
@@ -175,13 +167,20 @@ function Checkout() {
           </div>
         );
       })}
-
-      {/* <div>{calculateTotal()}</div>
+      <br />
       <div>
-        {`Sub Total: ${values.subTotal}`} 
-        {`Savings:${values.savings}`}
-        {`Total Amount:${values.totalAmount}`} 
-      </div> */}
+        <p>{`Sub Total: £${storedCart?.reduce(function (sum1 = 0, item) {
+          return (sum1 = sum1 + item.price * item.count);
+        },0).toFixed(2)}`}</p>
+
+        <p>{`Savings: £${storedCart?.reduce(function (sum2 = 0, item) {
+          return (sum2 = sum2 + item.savings);
+        },0).toFixed(2)}`}</p>
+
+        <p>{`Total Amount: £${storedCart?.reduce(function(result=0, item){
+         return result = result + Number(item.itemFinalCost)
+      },0).toFixed(2)}`}</p>
+      </div>
     </div>
   );
 }
