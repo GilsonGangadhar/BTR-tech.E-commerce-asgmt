@@ -1,89 +1,187 @@
-import React from "react";
+import React, {useState} from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { addToCart, removeFromCart } from "../../actions/cartAction";
+import { addToCart } from "../../actions/cartAction";
 
 function Checkout() {
+  const [values, setValues] = useState({
+    subTotal: 0,
+    savings: 0,
+    totalAmount: 0
+  })
   const dispatch = useDispatch();
   const storedCart = useSelector((state) => state.cart);
 
-  console.log(storedCart, "cart in checkout");
-
   const handleClickAdd = (item) => {
-    
-    let newItem = {...item, count : item.count +1};
-    const objIndex =  storedCart.findIndex((item) => item.title === newItem.title);
-
-    let newCartArray = [...storedCart];
-    newCartArray[objIndex] = newItem; 
-
-    console.log(newCartArray, "add");
-    dispatch(addToCart(newCartArray));
+    calculateSpecialOffers(item, item.count + 1);
   };
 
   const handleClickRemove = (item) => {
-    if(!item.count <= 0){
-
-    let newItem = {...item, count: item.count-1};
-
-    const objIndex =  storedCart.findIndex((item) => item.title === newItem.title);
-    let newCartArray = [...storedCart];
-
-    newCartArray[objIndex] = newItem; 
-    console.log(newCartArray, "remove");
-
-    dispatch(removeFromCart(newCartArray));
-    }  
-    
+    calculateSpecialOffers(item, item.count - 1);
   };
 
-  /*
-  Item cost{" "} {item.unit}{Number(item.price * item.count)}
-  
-  
-  
-  */
+  const calculateSpecialOffers = (cartItem, itemCount) => {
+    switch (cartItem.title) {
+      case "Butter": {
+        let newCartArray = [...storedCart];
+        let butterItemIndex = newCartArray.findIndex(
+          (item) => item.title === "Butter"
+        );
+
+        newCartArray[butterItemIndex] = {
+          ...cartItem,
+          count: itemCount,
+          savings: (cartItem.price * itemCount) / 3,
+          itemFinalCost: (
+            cartItem.price * itemCount -
+            (cartItem.price * itemCount) / 3
+          ).toFixed(2),
+        };
+        dispatch(addToCart(newCartArray));
+        return;
+      }
+
+      case "Milk": {
+        let newCartArray = [...storedCart];
+        let milkItemIndex = newCartArray.findIndex(
+          (item) => item.title === "Milk"
+        );
+
+        newCartArray[milkItemIndex] = {
+          ...cartItem,
+          count: itemCount,
+          itemFinalCost: (cartItem.price * itemCount).toFixed(2),
+        };
+
+        dispatch(addToCart(newCartArray));
+        return;
+      }
+
+      case "Cheese": {
+        let newCartArray = [...storedCart];
+        let cheeseItemIndex = newCartArray.findIndex(
+          (item) => item.title === "Cheese"
+        );
+        let cheeseSavings = (0.45) * itemCount;
+        newCartArray[cheeseItemIndex] = {
+          ...cartItem,
+          count: itemCount,
+          itemFinalCost: (cartItem.price * itemCount - cheeseSavings).toFixed(
+            2
+          ),
+          savings: cheeseSavings,
+        };
+        dispatch(addToCart(newCartArray));
+        return;
+      }
+
+      case "Bread": {
+        let newCartArray = [...storedCart];
+        let breadItemIndex = newCartArray.findIndex(
+          (item) => item.title === "Bread"
+        );
+
+        newCartArray[breadItemIndex] = {
+          ...cartItem,
+          count: itemCount,
+          itemFinalCost: (cartItem.price * itemCount).toFixed(2),
+        };
+
+        dispatch(addToCart(newCartArray));
+        return;
+      }
+
+      case "Soup": {
+        //soup, go modify bread item savings by (0.55 * count
+        let newCartArray = [...storedCart];
+        let breadItem = newCartArray.find((item) => item.title === "Bread");
+        let breadItemIndex = newCartArray.findIndex(
+          (item) => item.title === "Bread"
+        );
+
+        let soupItem = { ...cartItem };
+        let soupItemCount = itemCount;
+        let soupItemIndex = newCartArray.findIndex(
+          (item) => item.title === "Soup"
+        );
+
+        if (breadItem) {
+          newCartArray[breadItemIndex] = {
+            ...breadItem,
+            savings: 0.55 * soupItemCount,
+            itemFinalCost: (
+              breadItem.price * breadItem.count -
+              0.55 * soupItemCount
+            ).toFixed(2),
+          };
+        }
+
+        newCartArray[soupItemIndex] = {
+          ...soupItem,
+          count: soupItemCount,
+          itemFinalCost: (soupItem.price * soupItemCount).toFixed(2),
+        };
+
+        dispatch(addToCart(newCartArray));
+        return;
+      }
+
+      default:
+        return cartItem;
+    }
+  };
+
+  const calculateTotal = () => {
+
+  }
+
+  console.log(storedCart, "storedCart")
 
   return (
     <div>
       <span>
         <h1>Basket - {storedCart.length}</h1>
       </span>
-      {storedCart.map((item, index) => (
-        <div key={index}>
-          <h3>{item.title}</h3>
-          <p>{item.unit}</p>
-          <h3>{item.price}</h3>
-          <span>
-          <button onClick={() => handleClickAdd(item)}>+</button>
-          <h4>{item.count}</h4>
-          <button onClick={() => handleClickRemove(item)}>-</button>
-          </span>
-          <p>{`Item Price ${item.unit}${item.price} * ${item.count} `} = {item.unit}{(item.price * item.count).toFixed(2)}</p>
-          
-          {/* savings */}
+      {storedCart.map((item, index) => {
+        return (
+          <div key={index}>
+            <h3>{item.title}</h3>
+            <p>{item.unit}</p>
+            <h3>{item.price}</h3>
+            <span>
+              <button onClick={() => handleClickAdd(item)}>+</button>
+              <h4>{item.count}</h4>
+              <button onClick={() => handleClickRemove(item)}>-</button>
+            </span>
+            <p>
+              {`Item Price ${item.unit}${item.price} * ${item.count} `} ={" "}
+              {item.unit}
+              {(item.price * item.count).toFixed(2)}
+            </p>
 
-          {item.title === "Bread" && (<span><p>Savings{" "} £{item.price/2}</p></span>)}
+            {/* savings */}
+            <span>
+              {item.savings > 0 ? (
+                <p>Savings £{item.savings.toFixed(2)}</p>
+              ) : (
+                <></>
+              )}
+            </span>
 
-          {item.title === "Cheese" && (<span><p>Savings{" "} £{item.price/2}</p><p>{`(Buy 1 get 1 free)`}</p></span>)}
+            {/* ṭotal cost */}
+            <div>
+              Item cost {item.unit}
+              {item.itemFinalCost}
+            </div>
+          </div>
+        );
+      })}
 
-          {item.title === "Butter" && (<span><p>Savings{" "} £{(item.price/3).toFixed(2)}</p></span>)}
-
-          
-          {/* ṭotal cost */}
-          {item.title === "Milk" && (<div>Item cost{" "} {item.unit}{(item.price * item.count).toFixed(2)}</div>) }
-
-          {item.title === "Soup" && (<div>Item cost{" "} {item.unit}{(item.price * item.count).toFixed(2)}</div>)}
-
-          {item.title === "Bread" && (<div>Item cost{" "} {item.unit}{((item.price * item.count) - item.price/2).toFixed(2)}</div>)}
-
-          {item.title === "Cheese" && (<div><p>Item cost{" "} {item.unit}{(item.price/2 * item.count).toFixed(2)}</p></div>)}
-
-          {item.title === "Butter" && (<div><p>Item cost{" "} {item.unit}{((item.price * item.count) - item.price/3).toFixed(2)}</p></div>) }
-        </div>
-      ))}
-     {/* <h3>Sub Total: </h3>
-     <h3>Savings: </h3>
-     <h3>Total Amount: </h3> */}
+      {/* <div>{calculateTotal()}</div>
+      <div>
+        {`Sub Total: ${values.subTotal}`} 
+        {`Savings:${values.savings}`}
+        {`Total Amount:${values.totalAmount}`} 
+      </div> */}
     </div>
   );
 }
