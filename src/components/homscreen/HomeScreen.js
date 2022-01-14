@@ -1,39 +1,48 @@
 import React, { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import data from "../../data.json";
-import {addCart} from '../../actions/cartAction'
-import "./homescreen.css"
+import { addCart } from "../../actions/cartAction";
+import "./homescreen.css";
 
 function HomeScreen() {
-    const [products, setProducts] = useState([]);
-    // const [cart, setCart] = useState([]);
-    const dispatch = useDispatch();
+  const [products, setProducts] = useState([]);
+  const dispatch = useDispatch();
+  const storedCart = useSelector((state) => state.cart);
 
-    useEffect(() => {
-        setProducts([...products, ...data])
-    }, []);
+  useEffect(() => {
+    setProducts([...products, ...data]);
+  }, []);
 
 
-const handleClick = (item) => {
-// setCart([...cart, item]);
-dispatch(addCart(item))
-}
+  const handleClick = (item) => {
+    let result =storedCart.map(function(ele) {
+      return ele.title
+    });
+
+    console.log(result, "condition")
+    if (storedCart.length === 0) {
+      dispatch(addCart(item));
+    } else if (
+      storedCart.length > 0 &&
+      !result.includes(item.title)
+    ) {
+      dispatch(addCart(item));
+    }
+  };
 
   return (
     <div className="container">
-      <span><h1>Product listing</h1></span>
+        
       <div className="product__listing">
-          {
-              products.map(product => (
-                  <div className="product__card" key={product.id}>
-                      <h4>{product.title}</h4>
-                      <p>{product.unit}</p>
-                      <p>{product.price}</p>
-                      <button onClick={() => handleClick(product)}>Add to Cart</button>
-                  </div>
-              ))
-          }
-         
+    <h1>Product listing</h1>
+        {products.map((product) => (
+          <div className="product__card" key={product.id}>
+            <h4>{product.title}</h4>
+            
+            <p>{product.unit}{product.price}</p>
+            <button onClick={() => handleClick(product)}>Add</button>
+          </div>
+        ))}
       </div>
     </div>
   );

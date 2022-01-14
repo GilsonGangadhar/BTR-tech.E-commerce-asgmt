@@ -1,0 +1,40 @@
+.product__listing > h1{
+    margin : 1rem 0;
+    border-bottom: 1px solid gray;
+    padding-bottom: 5px;
+}
+
+
+.product__card{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding : .8rem 1rem;
+    border-bottom: 1px rgba(128, 128, 128, 0.2) solid;
+}
+
+
+
+.product__card:hover{
+    background-color: rgba(219, 212, 212, 0.664);
+}
+
+.product__card > button{
+    padding : 0.4rem 0.5rem;
+    margin : -0.1rem 0;
+    border-radius: 0.3rem;
+    background-color: rgb(144, 195, 204);;
+    color : white;
+    border : none;
+    cursor: pointer;
+}
+
+.product__card > button:hover{
+    background-color: #000;
+    color : #fff;
+}
+
+.product__card > button:active{
+    background-color: rgb(231, 39, 55);
+    color : white;
+}

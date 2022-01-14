@@ -2,8 +2,15 @@
   margin : 0;
 }
 
+
+body {
+  font-family: "Gill Sans", sans-serif;
+}
+
+
+
 .container {
-  display : flex;
-  justify-content: space-evenly;
-  margin : 3rem 3rem;
+   display : flex;
+   justify-content:space-around;
+   margin : 1rem,
 }
