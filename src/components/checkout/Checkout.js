@@ -12,7 +12,9 @@ function Checkout() {
   };
 
   const handleClickRemove = (item) => {
-    calculateSpecialOffers(item, item.count - 1);
+    if (item.count >= 1) {
+      calculateSpecialOffers(item, item.count - 1);
+    }
   };
 
   const calculateSpecialOffers = (cartItem, itemCount) => {
