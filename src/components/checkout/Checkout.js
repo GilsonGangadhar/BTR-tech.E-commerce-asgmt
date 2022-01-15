@@ -129,7 +129,7 @@ function Checkout() {
   console.log(storedCart, "storedCart");
 
   return (
-    <div className="checkbox_container">
+    <div className="checkout__container">
       <div className="checkout__listing">
         <h1>Basket ({storedCart.length} - Items)</h1>
         <div className="checkout_scrollable" id="style-1">
@@ -149,8 +149,10 @@ function Checkout() {
 
                 <div className="checkoutCard__details">
                   <p>
-                    {`Item Price${" "}${item.unit}${item.price} * ${item.count} `} ={" "}
-                    {item.unit}
+                    {`Item Price${" "}${item.unit}${item.price} * ${
+                      item.count
+                    } `}{" "}
+                    = {item.unit}
                     {(item.price * item.count).toFixed(2)}
                   </p>
 
@@ -192,8 +194,8 @@ function Checkout() {
           .toFixed(2)}`}</p>
       </div>
       <div className="checkout__total">
-        <p style={{fontWeight: "bold"}}>{`Total Amount:`}</p>{" "}
-        <p style={{fontWeight: "bold"}}>{`£${storedCart
+        <p style={{ fontWeight: "bold" }}>{`Total Amount:`}</p>{" "}
+        <p style={{ fontWeight: "bold" }}>{`£${storedCart
           ?.reduce(function (result = 0, item) {
             return (result = result + Number(item.itemFinalCost));
           }, 0)
